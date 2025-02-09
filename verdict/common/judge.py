@@ -73,6 +73,19 @@ class BestOfKJudgeUnit(Unit):
 
 class PairwiseJudgeUnit(BestOfKJudgeUnit):
     _char: str = "PairwiseJudge"
+    """
+    Judge unit for pairwise comparison (e.g., 'Response A' vs 'Response B').
+    Options should be LLM responses.
+    """
+    def __init__(self, response_options: Optional[DiscreteScale]=None, explanation: bool=False, original: bool=False, **kwargs):
+        super().__init__(k=2, options=response_options, explanation=explanation, original=original, **kwargs)
 
-    def __init__(self, options: Optional[DiscreteScale]=None, explanation: bool=False, original: bool=False, **kwargs):
-        super().__init__(k=2, options=options, explanation=explanation, original=original, **kwargs)
+
+class CategoricalJudgeUnit(BestOfKJudgeUnit):
+    _char: str = "CategoricalJudge"
+    """
+    Judge unit for categorical decisions (e.g., 'Yes' or 'No', 'Harmful' or 'Not Harmful', 'Hallucination' or 'No Hallucination').
+    Options should represent discrete categorical choices.
+    """
+    def __init__(self, categories: Optional[DiscreteScale]=None, explanation: bool=False, original: bool=False, **kwargs):
+        super().__init__(k=2, options=categories, explanation=explanation, original=original, **kwargs)
