@@ -1,4 +1,5 @@
 from contextlib import nullcontext
+from datasets import Dataset
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple, Union
 
@@ -32,7 +33,7 @@ class Pipeline:
         super().__init__()
         self.name = name
         self.block = Block()
-    
+
     def copy(self) -> "Pipeline":
         pipeline = Pipeline(self.name)
         pipeline.block = self.block.copy()
@@ -45,7 +46,7 @@ class Pipeline:
     def via(self, policy_or_name: Union[ModelSelectionPolicy, str], retries: int=1, **inference_parameters) -> Self:
         self.block.via(policy_or_name, retries, **inference_parameters)
         return self
-    
+
     def collect_outputs(self, executor: GraphExecutor, block_instance: Block) -> Tuple[Dict[str, Schema], List[str]]:
         leaf_node_prefixes: List[str] = []
         outputs: Dict[str, Schema] = {}
@@ -179,6 +180,22 @@ class Pipeline:
                 live.refresh() # type: ignore
 
             return result_df, sorted(list(leaf_node_prefixes))
+
+    @keyboard_interrupt_safe
+    def run_from_list(
+        self,
+        dataset: List[Schema],
+        max_workers: int = 128,
+        experiment_config: Optional[ExperimentConfig] = None,
+        display: bool = False,
+        graceful: bool = False,
+    ) -> Tuple[Dict[str, Schema], List[str]]:
+        vedict_dataset = DatasetWrapper(
+            Dataset.from_list([data.model_dump() for data in dataset])
+        )
+        return self.run_from_dataset(
+            vedict_dataset, max_workers, experiment_config, display, graceful
+        )
 
     def checkpoint(self, path: Path):
         # TODO
