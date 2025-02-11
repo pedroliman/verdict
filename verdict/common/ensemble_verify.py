@@ -79,15 +79,16 @@ class EnsembleVerifyJudge:
             >> MaxPoolUnit()
         )
 
-    def run(self, dataset: List[Schema]):
+    def run(self, dataset: List[Schema]) -> List[str]:
         results_df, leaf_node_cols = self.pipeline.run_from_list(dataset)
         return list(results_df[leaf_node_cols[0]])
 
 
 if __name__ == "__main__":
-    judge = EnsembleVerifyJudge(model="gpt-4o-mini")
+    judge = EnsembleVerifyJudge()
     test = judge.run(
         [
+            # Examples from ExpertQA
             Schema.of(
                 doc="DX Bash learning on the different ways on how they can make the child comfortable and relaxed. Find non-verbal cues to connect Communicating with a child with autism may be daunting. However, you need to talk or even touch to bond and communicate. The tone of your voice and body language have a significant impact on how you communicate with a child suffering from autism; hence you need to learn their language to help improve communications between you, this will make them feel loved and accepted within the family. Maintain a personalized autism treatment plan With many different treatments available, it can",
                 claim="The child can feel loved and accepted within the family this way.",
