@@ -77,8 +77,20 @@ MapUnit(lambda input: Schema.of(
 ```
 +++
 
+
 ## Self-Preference Bias
-TODO: cite
-* use an uncorrelated model
+As shown in [*LLM Evaluators Recognize and Favor Their Own Generations*](https://arxiv.org/abs/2404.13076) and [*Self-Preference Bias in LLM Evaluators*](https://arxiv.org/abs/2410.21819), LLMs tend to favor their own generations. This can lead to a positive-skew when verifying judge explanations as part of a hierarchical verification pipeline, for example. To mitigate this, we recommend using an uncorrelated model as a judge. Below, we show the the distribution of yes/no using different models for the heirarchical verification judge in our [quickstart example](../quickstart.md). Note that using the same model for the initial judge and verification judge will result in a positive-skew that does not discriminate faithfully between good and bad explanations.
+
+![](/static/bias/self-preference.png)
+
 
 ## Structured Output Bias
+Constrained decoding methods for structured outputs (e.g., JSON-mode) impose an inductive bias on the model's output distribution. We demonstrate this with a toy example: figuring out the contested height of a fictional character -- Willy Wonka. We obtain a distribution over structured outputs and [post-hoc](../concept/extractor.md#post-hoc) by running each 100 times, whereas [TokenProbabilityExtractor](../concept/extractor.md#token-probability) is from a single run. This demonstrates that the logprobs from a single run can provide a proxy for the model's uncertainty.
+
+![](/static/bias/extractor.png)
+
+
+## Skew Bias
+Provider models tend to have a skew distribution of scores due in part to their instruction tuning. While desirable for some consumer-facing applications, this can cause LLM-as-a-judge evaluators to miscalibrated. We demonstrate this with a toy example of coin-flipping.
+
+![](/static/bias/skew.png)
