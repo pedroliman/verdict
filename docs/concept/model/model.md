@@ -74,3 +74,16 @@ As an extension of the retry logic, `Verdict` also supports a general model sele
 ]))
 ```
 
+### Prefix/Prompt Caching
+We find that many model providers cache prefixes/prompts by default, even when structured decoding fails. This effectively poisons the cache and causes retries to have no effect. To alleviate this, we add a 10-character random alpha nonce at the start of each prompt for all `ProviderModel`s. Disable this by passing `use_nonce=False` to the `Model` constructor.
+
+```python
+from verdict.model import ProviderModel
+model = ProviderModel(
+    "gpt-4o-mini",
+    use_nonce=False
+)
+
+...
+>> JudgeUnit.via(model)
+```
