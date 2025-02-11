@@ -293,6 +293,8 @@ class TokenProbabilityExtractor(Extractor):
                 streaming=self.streaming
             )
 
+        logger.debug(f"TokenProbabilityExtractor {self.__class__.__name__} received response: {response.choices[0].message.content}")
+
         usage = Usage(
             in_tokens=response.usage.prompt_tokens,
             out_tokens=response.usage.completion_tokens
@@ -301,6 +303,7 @@ class TokenProbabilityExtractor(Extractor):
         distribution: Dict[Any, float] = defaultdict(float)
         if hasattr(choice := response.choices[0], 'logprobs'):
             logprobs = choice.logprobs
+            logger.debug(f"TokenProbabilityExtractor {self.__class__.__name__} received logprobs: {logprobs}")
             if logprobs['content'] is not None:
                 probabilities = {
                     lp['token']: math.exp(lp['logprob']) for lp in logprobs['content'][0]['top_logprobs'] if lp['token'] in self.scale.token_support()
