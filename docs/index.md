@@ -121,15 +121,9 @@ from verdict.util.experiment import display_stats, ExperimentConfig
 display_stats(response_df, ExperimentConfig(ground_truth_cols=['label'], prediction_cols=['pred_label']));
 ```
 
-```
- ───────────────────────────────────────────────────────────────────────────────────────────────────────────────── 
-  Ground Truth   Prediction             Acc.              Cohen (κ)           Kendall (τ)         Spearman (ρ)     
- ───────────────────────────────────────────────────────────────────────────────────────────────────────────────── 
-         label   pred_label            60.00%                0.20                0.33                 0.33         
- ───────────────────────────────────────────────────────────────────────────────────────────────────────────────── 
-```
-
 ---
 
 ### Putting it All Together
 View [this notebook](https://colab.research.google.com/github/haizelabs/verdict/blob/main/notebooks/results/hierarchical.ipynb) for a complete example (with prompts) that reproduces our SOTA results on the ExpertQA hallucination detection dataset.
+
+![](/static/quickstart/results.png)
