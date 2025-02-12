@@ -75,7 +75,7 @@ class StructuredOutputExtractor(Extractor):
 
         usage = Usage(
             in_tokens=sum(len(client_wrapper.encode(message['content'])) for message in messages),
-            out_tokens=len(client_wrapper.encode(str(response.model_dump())))
+            out_tokens=len(client_wrapper.encode(str(response.model_dump()))) if not self.streaming else -1
         )
 
         return response, usage

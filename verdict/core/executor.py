@@ -46,16 +46,16 @@ class CascadingProperty:
             name: str,
             nodes_fn: Callable[[Any], Collection["Node"]]=lambda graph: graph.nodes,
             obj_fn: Callable[[Any], Any]=lambda unit: unit,
-            default=None):
+            default_factory: Callable[[], Any]=lambda: None):
         self.name = name
         self.nodes_fn = nodes_fn
         self.obj_fn = obj_fn
-        self.default = default
+        self.default_factory = default_factory
 
     def __get__(self, obj: Any, objtype=None) -> Any:
         if obj is None:
             return self
-        return getattr(self.obj_fn(obj), self.name, self.default)
+        return getattr(self.obj_fn(obj), self.name, self.default_factory())
 
     def __set__(self, obj: Any, value: Any) -> None:
         setattr(self.obj_fn(obj), self.name, value)
@@ -80,19 +80,19 @@ class Node(ABC):
     source_input = CascadingProperty("_source_input")
     executor = CascadingProperty("_executor")
 
-    extractor = CascadingProperty("_extractor", default=StructuredOutputExtractor)
+    extractor = CascadingProperty("_extractor", default_factory=lambda: StructuredOutputExtractor())
     extract = CascadingSetter("extractor", attr_type=Extractor)
 
     should_pin_output = CascadingProperty("_should_pin_output")
     pin = CascadingSetter("should_pin_output")
 
-    should_stream_output = CascadingProperty("_should_stream_output", default=False)
+    should_stream_output = CascadingProperty("_should_stream_output", default_factory=lambda: False)
     stream = CascadingSetter("should_stream_output")
 
     propagator = CascadingProperty("_propagator", lambda graph: graph.leaf_nodes)
     propagate = CascadingSetter("propagator")
 
-    __idx = CascadingProperty("_idx", default=None)
+    __idx = CascadingProperty("_idx", default_factory=lambda: None)
     idx = CascadingSetter("__idx")
 
     _ordering_timestamp: float

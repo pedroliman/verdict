@@ -330,7 +330,7 @@ class Unit(Node, Task,
                 logger.debug(f"Received response: {response.escape()}")
 
                 out_tokens = usage.out_tokens
-                if usage.is_unknown():
+                if usage.is_unknown() or usage.out_tokens == -1:
                     out_tokens = len(client.encode(str(response.model_dump()) if isinstance(response, Schema) else response))
                 self.shared.output_tokens.append(out_tokens)
                 client.model.rate_limit.release({
