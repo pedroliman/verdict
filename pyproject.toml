@@ -13,7 +13,7 @@ issues = "https://github.com/haizelabs/verdict/issues"
 
 [project]
 name = "verdict"
-version = "0.1.0"
+version = "0.1.2"
 authors = [{ name = "Nimit Kalra", email = "nimit@haizelabs.com" }]
 license = { text = "MIT License" }
 description = "LLM evaluation pipelines"
@@ -28,8 +28,8 @@ classifiers = [
 
 dependencies = [
     "instructor==1.7.2",
-    "litellm==1.53.7",
-    "openai~=1.59.3",
+    "litellm",
+    "openai",
     "dill",
     "graphviz",
     "pandas",
