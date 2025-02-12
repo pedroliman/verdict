@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://verdict.haizelabs.com/hero.png" alt="Verdict Logo" width="61.8%"/>
+<img src="https://verdict.haizelabs.com/hero.png?" alt="Verdict Logo" width="61.8%"/>
 
 **[Paper](https://verdict.haizelabs.com/draft.pdf) | [Docs](https://verdict.haizelabs.com/docs) | [Results](https://verdict.haizelabs.com)**
 
