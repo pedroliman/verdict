@@ -79,7 +79,7 @@ MapUnit(lambda input: Schema.of(
 
 
 ## Self-Preference Bias
-As shown in [*LLM Evaluators Recognize and Favor Their Own Generations*](https://arxiv.org/abs/2404.13076) and [*Self-Preference Bias in LLM Evaluators*](https://arxiv.org/abs/2410.21819), LLMs tend to favor their own generations. This can lead to a positive-skew when verifying judge explanations as part of a hierarchical verification pipeline, for example. To mitigate this, we recommend using an uncorrelated model as a judge. Below, we show the the distribution of yes/no using different models for the heirarchical verification judge in our [quickstart example](../quickstart.md). Note that using the same model for the initial judge and verification judge will result in a positive-skew that does not discriminate faithfully between good and bad explanations.
+As shown in [*LLM Evaluators Recognize and Favor Their Own Generations*](https://arxiv.org/abs/2404.13076) and [*Self-Preference Bias in LLM Evaluators*](https://arxiv.org/abs/2410.21819), LLMs tend to favor their own generations. This can lead to a positive-skew when verifying judge explanations as part of a hierarchical verification pipeline, for example. To mitigate this, we recommend using an uncorrelated model as a judge. Below, we show the the distribution of yes/no using different models for the heirarchical verification judge in our [quickstart example](../index.md). Note that using the same model for the initial judge and verification judge will result in a positive-skew that does not discriminate faithfully between good and bad explanations.
 
 ![](/static/bias/self-preference.png)
 
