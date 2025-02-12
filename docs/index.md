@@ -132,4 +132,4 @@ display_stats(response_df, ExperimentConfig(ground_truth_cols=['label'], predict
 ---
 
 ### Putting it All Together
-View examples/hierarchical.py for a complete example (with prompts) that reproduces our SOTA results on the ExpertQA hallucination detection dataset.
+View [this notebook](https://colab.research.google.com/github/haizelabs/verdict/blob/main/notebooks/results/hierarchical.ipynb) for a complete example (with prompts) that reproduces our SOTA results on the ExpertQA hallucination detection dataset.
