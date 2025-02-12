@@ -5,20 +5,8 @@ from abc import ABCMeta
 from dataclasses import dataclass, field
 from enum import Enum
 from itertools import cycle
-from typing import (
-    Callable,
-    Dict,
-    Generic,
-    Iterator,
-    List,
-    Optional,
-    Set,
-    Tuple,
-    Type,
-    TypeVar,
-    Union,
-    final,
-)
+from typing import (Callable, Dict, Generic, Iterator, List, Optional, Set,
+                    Tuple, Type, TypeVar, Union, final)
 
 import numpy as np
 import rich.align
@@ -43,14 +31,10 @@ from verdict.extractor import Extractor
 from verdict.model import ModelConfigurable, ModelSelectionPolicy
 from verdict.prompt import Promptable, PromptMessage
 from verdict.schema import Schema
-from verdict.util.exceptions import (
-    ConfigurationError,
-    PostProcessError,
-    PostValidationError,
-    PropagateError,
-    VerdictDeclarationTimeError,
-    VerdictExecutionTimeError,
-)
+from verdict.util.exceptions import (ConfigurationError, PostProcessError,
+                                     PostValidationError, PropagateError,
+                                     VerdictDeclarationTimeError,
+                                     VerdictExecutionTimeError)
 from verdict.util.log import logger as base_logger
 from verdict.util.misc import DisableLogger
 

@@ -1,10 +1,11 @@
 from dataclasses import dataclass, field
+from typing import List
+
 from verdict import Pipeline
 from verdict.common.cot import CoTUnit
 from verdict.common.judge import JudgeUnit
 from verdict.scale import DiscreteScale
 from verdict.schema import Schema
-from typing import List
 
 DEFAULT_JUDGE_PROMPT = """
 Based on the following, extract the final score.

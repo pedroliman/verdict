@@ -9,21 +9,8 @@ from abc import ABC, abstractmethod
 from contextlib import ExitStack, contextmanager
 from enum import Enum
 from pathlib import Path
-from typing import (
-    Any,
-    Callable,
-    Collection,
-    ContextManager,
-    Dict,
-    Generic,
-    List,
-    Optional,
-    Set,
-    Tuple,
-    Type,
-    TypeVar,
-    Union,
-)
+from typing import (Any, Callable, Collection, ContextManager, Dict, Generic,
+                    List, Optional, Set, Tuple, Type, TypeVar, Union)
 
 import dill  # type: ignore[import-untyped]
 import networkx as nx  # type: ignore[import-untyped]
@@ -33,11 +20,9 @@ from typing_extensions import Self
 from verdict import config
 from verdict.extractor import Extractor, StructuredOutputExtractor
 from verdict.schema import Schema
-from verdict.util.exceptions import (
-    ConfigurationError,
-    VerdictExecutionTimeError,
-    VerdictSystemError,
-)
+from verdict.util.exceptions import (ConfigurationError,
+                                     VerdictExecutionTimeError,
+                                     VerdictSystemError)
 from verdict.util.log import logger as base_logger
 
 

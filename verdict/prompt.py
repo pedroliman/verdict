@@ -4,7 +4,8 @@ import random
 import re
 import string
 from abc import ABC, abstractmethod
-from typing import Any, Dict, List, NamedTuple, Optional, Set, Tuple, Type, Union
+from typing import (Any, Dict, List, NamedTuple, Optional, Set, Tuple, Type,
+                    Union)
 
 from loguru._logger import Logger
 from typing_extensions import Self

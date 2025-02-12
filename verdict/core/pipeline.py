@@ -1,5 +1,4 @@
 from contextlib import nullcontext
-from datasets import Dataset
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple, Union
 
@@ -9,6 +8,7 @@ import rich.layout
 import rich.live
 import rich.panel
 import rich.tree
+from datasets import Dataset
 from PIL import Image
 from typing_extensions import Self
 

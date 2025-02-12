@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
 from typing import List
-from verdict import Pipeline, Block, Layer
+
+from verdict import Block, Layer, Pipeline
 from verdict.common.judge import CategoricalJudgeUnit
 from verdict.scale import DiscreteScale
 from verdict.schema import Schema

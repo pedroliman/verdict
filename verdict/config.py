@@ -3,11 +3,8 @@ from pathlib import Path
 from typing import Any, Dict
 
 from verdict.model import ModelSelectionPolicy
-from verdict.util.ratelimit import (
-                                    ConcurrentRateLimiter,
-                                    RateLimitPolicy,
-                                    TimeWindowRateLimiter,
-)
+from verdict.util.ratelimit import (ConcurrentRateLimiter, RateLimitPolicy,
+                                    TimeWindowRateLimiter)
 
 # Defaults
 ## Rate limiting
