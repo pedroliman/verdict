@@ -6,10 +6,11 @@ order: 9
 
 # Quickstart
 
-Getting started with Verdict is easy!
+Verdict allows you to define arbitrary compound LLM-as-a-judge systems in a declarative manner. Here, we show an example of a Verdict judging pipeline that enables us to achieve SOTA  **(+14.5% over GPT-4o)** on the ExpertQA hallucination detection dataset.
 
-Here, we show an example of a Verdict judging pipeline that enables us to achieve SOTA  **(+14.5% over GPT-4o)** on the ExpertQA hallucination detection dataset. The intuition is simple. We define a judging protocol that consists of
+First, install the package with `pip install verdict` (or with `uv`).
 
+We'll define a judging protocol that consists of
 1. A GPT-4o judge who initially determines whether a hallucination is present
 2. A second verification GPT-4o judge who reviews and validates the first judge's reasoning and decision
 
@@ -54,7 +55,7 @@ pipeline = Pipeline('HallucinationDetectionHierarchicalVerifier') \
     >> MaxPoolUnit()
 
 # Graphical representation of the Verdict system
-pipeline.plot()
+pipeline.plot() # requires Graphviz binaries
 ```
 
 ![](/static/quickstart/pipeline.png)
