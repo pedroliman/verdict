@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from typing import List
-from verdict import Pipeline, Block, Layer
+from verdict import Pipeline, Layer
 from verdict.common.judge import JudgeUnit
 from verdict.scale import ContinuousScale
 from verdict.schema import Schema
@@ -39,7 +39,7 @@ class ModelEnsembleJudge:
 if __name__ == "__main__":
 
     prompt = """
-    Rate this joke's comedic merit on: {source.joke}
+    Rate this joke's comedic merit: {source.joke}
     """
     judge = ModelEnsembleJudge(
         judge_prompt=prompt,
