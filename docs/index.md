@@ -8,12 +8,12 @@ order: 9
 
 Getting started with Verdict is easy!
 
-Here, we show an example of a Verdict judging pipeline that enables us to achieve SOTA  **(+14.5% over GPT-4o)** on the ExpertQA hallucination detection dataset. The intuition is simple. We define a judging protocol that is an ensemble of three copies of a sub-protocol, which consists of
+Here, we show an example of a Verdict judging pipeline that enables us to achieve SOTA  **(+14.5% over GPT-4o)** on the ExpertQA hallucination detection dataset. The intuition is simple. We define a judging protocol that consists of
 
 1. A GPT-4o judge who initially determines whether a hallucination is present
-2. A second verification GPT-4o-mini judge who reviews and validates the first judge's reasoning and decision
+2. A second verification GPT-4o judge who reviews and validates the first judge's reasoning and decision
 
-The results of each verification judge are then aggregated using a majority vote.
+We then repeat this process 3 times, and aggregate the resulting validated scores using a majority vote.
 
 ### Verdict Pipelines & Prompts
 Let's sketch this idea out using the Verdict DSL. We'll define a `judge_then_verify` protocol, layer 3 of them into an ensemble using a `Layer`, and aggregate the results with a `MaxPoolUnit`. Using the `>>` operator to define a dependency between LLM calls, we can compose arbitrarily complex judge protocols as shown below.
@@ -46,7 +46,7 @@ judge_then_verify = CategoricalJudgeUnit(name='Judge', categories=DiscreteScale(
     Answer Justification: {previous.explanation}
 
     Respond "yes" if the claim is consistent with the document and "no" if the claim is not consistent with the document.
-    """).via(policy_or_name='gpt-4o-mini', retries=3, temperature=0.0)
+    """).via(policy_or_name='gpt-4o', retries=3, temperature=0.0)
 
 # ...and then aggregate the results of the three judges+verifiers with a `MaxPoolUnit`
 pipeline = Pipeline('HallucinationDetectionHierarchicalVerifier') \
