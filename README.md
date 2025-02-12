@@ -1,6 +1,6 @@
 <div align="center">
 
-![](https://verdict.haizelabs.com/hero.png)
+![](https://verdict.haizelabs.com/hero.png?)
 
 [Paper](https://verdict.haizelabs.com/draft.pdf) |
 [Docs](https://verdict.haizelabs.com/docs)
