@@ -7,3 +7,7 @@ expanded: true
 
 We provide a shim for using an arbitrary Verdict pipeline as a [DSPy metric](https://dspy.ai/learn/evaluation/metrics/).
 
+!!!warning
+Disable the LiteLLM cache with a `litellm.cache = None` before your dspy.Metric call to avoid a known issue for between LiteLLM and Instructor.
+!!!
+
