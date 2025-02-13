@@ -18,6 +18,7 @@ from verdict.core.visualization import StreamingLayoutManager
 from verdict.dataset import DatasetWrapper
 from verdict.model import ModelSelectionPolicy
 from verdict.schema import Schema
+from verdict.util.exceptions import VerdictDeclarationTimeError
 from verdict.util.experiment import ExperimentConfig, get_experiment_layout
 from verdict.util.log import init_logger, logger
 from verdict.util.misc import keyboard_interrupt_safe
@@ -53,12 +54,15 @@ class Pipeline:
 
         for node in block_instance.nodes:
             try:
+                if not isinstance(executor.outputs[node], Schema): # type: ignore
+                    logger.debug(f"Node {node} with output {executor.outputs[node]} is not a Schema") # type: ignore
+
                 for key, value in executor.outputs[node].model_dump().items(): # type: ignore
                     outputs[(column_name := f"{self.name}_{'.'.join(node.prefix)}_{key}")] = value # type: ignore
                     if node in block_instance.leaf_nodes:
                         leaf_node_prefixes.append(column_name)
-            except Exception:
-                continue
+            except Exception as e:
+                raise VerdictDeclarationTimeError(f"Error collecting outputs for node {node} with outputs {executor.outputs[node]}") from e # type: ignore
 
         return outputs, sorted(list(leaf_node_prefixes))
 

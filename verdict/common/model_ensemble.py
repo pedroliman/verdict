@@ -25,7 +25,7 @@ class ModelEnsembleJudge:
                 [
                     JudgeUnit(scale=ContinuousScale(1, 5))
                     .prompt(self.judge_prompt)
-                    .via(policy_or_name=model)
+                    .via(policy_or_name=model, **self.kwargs)
                     for model in self.models
                 ]
             )
