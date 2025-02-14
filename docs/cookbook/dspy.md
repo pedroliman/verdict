@@ -5,9 +5,8 @@ order: 10
 expanded: true
 ---
 
-We provide a shim for using an arbitrary Verdict pipeline as a [DSPy metric](https://dspy.ai/learn/evaluation/metrics/).
-
 !!!warning
 Disable the LiteLLM cache with a `litellm.cache = None` before your dspy.Metric call to avoid a known issue for between LiteLLM and Instructor.
 !!!
 
+View an example of using an ensemble Verdict pipeline as a [DSPy metric](https://dspy.ai/learn/evaluation/metrics/) for [automated red-teaming](https://github.com/haizelabs/dspy-redteam/blob/master/redteam.py#L99).
