@@ -14,7 +14,7 @@ from verdict.model import ClientWrapper, Model, ModelSelectionPolicy
 from verdict.prompt import PromptMessage
 from verdict.scale import DiscreteScale
 from verdict.schema import Schema
-from verdict.util.exceptions import ConfigurationError
+from verdict.util.exceptions import ConfigurationError, VerdictExecutionTimeError
 
 
 @dataclass
@@ -177,11 +177,11 @@ class RegexExtractor(CustomExtractor):
                     matches[field] = _type(match_str)
                     logger.debug(f"Casted {match_str} to {_type}")
                 except Exception as e:
-                    raise ConfigurationError(
+                    raise VerdictExecutionTimeError(
                         f"RegexExtractor.extract() failed to cast match '{match_str}' for field '{field}' with pattern '{pattern}' in the output to {_type}. "
                     ) from e
             else:
-                raise ConfigurationError(
+                raise VerdictExecutionTimeError(
                     f"RegexExtractor.extract() failed to find a match for field '{field}' with pattern '{pattern}' in the output"
                 )
 
