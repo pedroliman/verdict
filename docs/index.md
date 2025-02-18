@@ -50,7 +50,7 @@ judge_then_verify = CategoricalJudgeUnit(name='Judge', categories=DiscreteScale(
     """).via(policy_or_name='gpt-4o', retries=3, temperature=0.0)
 
 # ...and then aggregate the results of the three judges+verifiers with a `MaxPoolUnit`
-pipeline = Pipeline('HallucinationDetectionHierarchicalVerifier') \
+pipeline = Pipeline('HierarchicalVerifier') \
     >> Layer(judge_then_verify, repeat=3) \
     >> MaxPoolUnit()
 
@@ -91,7 +91,7 @@ test_sample = Schema.of(
 # $ export OPENAI_API_KEY=*************************
 response, _ = pipeline.run(test_sample, max_workers=64)
 
-print(response['Pipeline_root.block.block.unit[Map MaxPool]_choice'])
+print(response['HierarchicalVerifier_root.block.block.unit[Map MaxPool]_choice'])
 # 'no'
 ```
 
@@ -116,7 +116,7 @@ dataset = DatasetWrapper.from_hf(
 
 # all responses from intermediate Units are available as columns in response_df!
 response_df, _ = pipeline.run_from_dataset(dataset['test'], max_workers=512)
-response_df['pred_label'] = response_df['Pipeline_root.block.block.unit[Map MaxPool]_choice'] == 'yes'
+response_df['pred_label'] = response_df['HierarchicalVerifier_root.block.block.unit[Map MaxPool]_choice'] == 'yes'
 
 from verdict.util.experiment import display_stats, ExperimentConfig
 display_stats(response_df, ExperimentConfig(ground_truth_cols=['label'], prediction_cols=['pred_label']));
