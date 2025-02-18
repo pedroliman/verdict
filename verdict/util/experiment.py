@@ -1,19 +1,17 @@
 """
 Rater agreement metrics
 """
+from __future__ import annotations
+
 import math
 from dataclasses import dataclass
 from typing import Callable, List, Optional, Union
 
-import krippendorff  # type: ignore[import-untyped]
-import pandas as pd
 import rich.box
 import rich.console
 import rich.layout
 import rich.spinner
 import rich.table
-from scipy.stats import kendalltau, spearmanr  # type: ignore[import-untyped]
-from sklearn.metrics import cohen_kappa_score  # type: ignore[import-untyped]
 
 
 @dataclass
@@ -53,24 +51,30 @@ def metric(percentage: bool=False) -> Callable[[Callable[..., Result]], Callable
     return decorator
 
 @metric(percentage=True)
-def accuracy(df: pd.DataFrame, ground_truth_col: str, prediction_col: str) -> Result:
+def accuracy(df: "pd.DataFrame", ground_truth_col: str, prediction_col: str) -> Result: # type: ignore
     return (df[ground_truth_col] == df[prediction_col]).mean() # type: ignore
 
 @metric()
-def kappa(df: pd.DataFrame, ground_truth_col: str, prediction_col: str) -> Result:
+def kappa(df: "pd.DataFrame", ground_truth_col: str, prediction_col: str) -> Result: # type: ignore
+    from sklearn.metrics import cohen_kappa_score # type: ignore[import-untyped]
     return cohen_kappa_score(df[ground_truth_col], df[prediction_col])
 
 @metric()
-def kendall_tau(df: pd.DataFrame, ground_truth_col: str, prediction_col: str) -> Result:
+def kendall_tau(df: "pd.DataFrame", ground_truth_col: str, prediction_col: str) -> Result: # type: ignore
+    from scipy.stats import kendalltau # type: ignore[import-untyped]
     return kendalltau(df[ground_truth_col], df[prediction_col]).statistic
 
 @metric()
-def spearman_rho(df: pd.DataFrame, ground_truth_col: str, prediction_col: str) -> Result:
+def spearman_rho(df: "pd.DataFrame", ground_truth_col: str, prediction_col: str) -> Result: # type: ignore
+    from scipy.stats import spearmanr # type: ignore[import-untyped]
     return spearmanr(df[ground_truth_col], df[prediction_col]).statistic
 
 @metric()
-def krippendorff_alpha(df: pd.DataFrame, ground_truth_col: str, prediction_col: str) -> Result:
+def krippendorff_alpha(df: "pd.DataFrame", ground_truth_col: str, prediction_col: str) -> Result: # type: ignore
+    import pandas as pd
     data_interval = pd.concat([df[ground_truth_col], df[prediction_col]], axis=1).to_numpy().T
+
+    import krippendorff  # type: ignore[import-untyped]
     return krippendorff.alpha(reliability_data=data_interval, level_of_measurement="interval")
 
 @dataclass
@@ -80,7 +84,7 @@ class ExperimentConfig:
 
     pivot_cols: Optional[List[str]] = None
 
-def compute_stats_table(df: pd.DataFrame, experiment_config: ExperimentConfig) -> list:
+def compute_stats_table(df: "pd.DataFrame", experiment_config: ExperimentConfig) -> list: # type: ignore
     """
     Compute the raw data for the stats table.
 
@@ -88,7 +92,7 @@ def compute_stats_table(df: pd.DataFrame, experiment_config: ExperimentConfig) -
     """
     rows = []
 
-    def _get_row(pivot_column: Optional[str], pivot_value: Optional[str], _df: pd.DataFrame, ground_truth_col: str, prediction_col: str) -> tuple[str, str, str, str, str, Result, Result, Result, Result]:
+    def _get_row(pivot_column: Optional[str], pivot_value: Optional[str], _df: "pd.DataFrame", ground_truth_col: str, prediction_col: str) -> tuple[str, str, str, str, str, Result, Result, Result, Result]:
         return (
             f'{pivot_column}={pivot_value}' if pivot_column and pivot_value else "—",
             str(len(_df)),
@@ -137,7 +141,7 @@ def format_stats_table(rows: list, experiment_config: ExperimentConfig) -> rich.
 
 
 def stats(
-    df: pd.DataFrame, experiment_config: ExperimentConfig
+    df: "pd.DataFrame", experiment_config: ExperimentConfig # type: ignore
 ) -> tuple[rich.table.Table, list[tuple[Union[str, int]]]]:
     """
     Compute and format the stats table.
@@ -148,7 +152,7 @@ def stats(
     return format_stats_table(rows, experiment_config), rows
 
 
-def get_experiment_layout(df: pd.DataFrame, experiment_config: ExperimentConfig) -> rich.layout.Layout:
+def get_experiment_layout(df: "pd.DataFrame", experiment_config: ExperimentConfig) -> rich.layout.Layout: # type: ignore
     len(df[experiment_config.pivot_cols].drop_duplicates()) if experiment_config.pivot_cols else 1
 
     formatted_table, _ = stats(df, experiment_config)
@@ -173,7 +177,7 @@ def get_experiment_layout(df: pd.DataFrame, experiment_config: ExperimentConfig)
 
 
 def display_stats(
-    df: pd.DataFrame, experiment_config: ExperimentConfig
+    df: "pd.DataFrame", experiment_config: ExperimentConfig # type: ignore
 ) -> list[tuple[Union[str, int]]]:
     console = rich.console.Console()
     fmt_table, raw_table = stats(df, experiment_config)

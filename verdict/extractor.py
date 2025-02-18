@@ -101,12 +101,12 @@ class RawExtractor(Extractor):
         )
 
         def streaming_extract(output, messages) -> Iterator[Schema]:
-            import litellm
+            from litellm import stream_chunk_builder # type: ignore[import-untyped]
 
             chunks = []
             for chunk in output:
                 chunks.append(chunk)
-                yield self.response_schema(**{self.field_name: litellm.stream_chunk_builder(chunks, messages=messages).choices[0].message.content}) # type: ignore
+                yield self.response_schema(**{self.field_name: stream_chunk_builder(chunks, messages=messages).choices[0].message.content}) # type: ignore
 
         if isinstance(output, Iterator):
             return streaming_extract(output, messages), Usage.unknown()

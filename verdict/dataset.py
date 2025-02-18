@@ -1,9 +1,8 @@
+from __future__ import annotations
 from pathlib import Path
 from typing import Any, Callable, Dict, Iterator, List, Optional, Tuple
 
 import dill  # type: ignore[import-untyped]
-import pandas as pd
-from datasets import Dataset  # type: ignore[import-untyped]
 from typing_extensions import Self
 
 from verdict.schema import Schema
@@ -12,8 +11,8 @@ from verdict.util.exceptions import ConfigurationError
 InputFn = Callable[[Dict[str, Any]], Schema]
 
 class DatasetWrapper(Iterator[Tuple[Dict[str, Any], Schema]]):
-    dataset: pd.DataFrame
-    samples: pd.DataFrame
+    dataset: "pd.DataFrame" # type: ignore
+    samples: "pd.DataFrame" # type: ignore
 
     max_samples: Optional[int]
 
@@ -24,11 +23,12 @@ class DatasetWrapper(Iterator[Tuple[Dict[str, Any], Schema]]):
 
     def __init__(
             self,
-            dataset: Dataset,
+            dataset: "Dataset", # type: ignore
             input_fn: Optional[InputFn]=None,
             columns: Optional[List[str]]=None,
             max_samples: Optional[int]=None,
     ):
+        import pandas as pd
         self.dataset = pd.DataFrame(dataset)
         self.dataset["hash(row)"] = self.dataset.apply(lambda row: hash(str(row)), axis=1)
         self.max_samples = int(max_samples) if max_samples else None
@@ -80,12 +80,13 @@ class DatasetWrapper(Iterator[Tuple[Dict[str, Any], Schema]]):
 
     @staticmethod
     def from_hf(
-            dataset: Dict[str, Dataset],
+            dataset: Dict[str, "Dataset"], # type: ignore
             input_fn: Optional[InputFn]=None,
             columns: Optional[List[str]]=None,
             max_samples: Optional[int]=None,
             expand: bool=False,
     ) -> Dict[str, "DatasetWrapper"]:
+        from datasets import Dataset # type: ignore[import-untyped]
         def expand_dataset(dataset: Dataset) -> Dataset:
             expanded_data = []
             for row in dataset:
@@ -108,12 +109,13 @@ class DatasetWrapper(Iterator[Tuple[Dict[str, Any], Schema]]):
 
     @staticmethod
     def from_pandas(
-            df: pd.DataFrame,
+            df: "pd.DataFrame", # type: ignore
             input_fn: Optional[InputFn]=None,
             columns: Optional[List[str]]=None,
             split_column: Optional[str]=None,
             max_samples: Optional[int]=None,
     ):
+        from datasets import Dataset # type: ignore[import-untyped]
         if split_column is not None:
             return DatasetWrapper.from_hf({
                 str(split): Dataset.from_pandas(_df)

@@ -4,7 +4,6 @@ from dataclasses import dataclass, field
 from typing import (Any, Callable, ContextManager, Dict, Iterator, List,
                     Optional, Tuple, Union)
 
-import instructor
 from loguru._logger import Logger
 from typing_extensions import Self
 
@@ -66,8 +65,8 @@ class ProviderModel(Model):
     def __post_init__(self) -> None:
         object.__setattr__(self, 'use_nonce', True)
 
-        import litellm
-        _, provider, _, _ = litellm.get_llm_provider(self.name)
+        from litellm import get_llm_provider # type: ignore[import-untyped]
+        _, provider, _, _ = get_llm_provider(self.name)
 
         from verdict import config
         if self.rate_limiter is None:
@@ -157,7 +156,8 @@ specified inference_parameters: {self.inference_parameters}
             parameters['stream'] = streaming
             if response_model is not None:
                 # needed for streaming structured output
-                response_model = instructor.Partial[response_model]
+                from instructor import Partial # type: ignore[import-untyped]
+                response_model = Partial[response_model]
             if 'timeout' in self.inference_parameters:
                 parameters['stream_timeout'] = self.inference_parameters['timeout']
 
@@ -173,12 +173,6 @@ class ClientWrapper:
     model: Model
     inference_parameters: dict[str, Any]
 
-    MODEL_PROVIDER_TO_INSTRUCTOR_MODE_OVERRIDE = {
-        "huggingface": instructor.Mode.JSON,
-        "deepinfra": instructor.Mode.JSON,
-        "together_ai": instructor.Mode.JSON
-    }
-
     def __init__(self, model: Model, **inference_parameters) -> None:
         self.model = model
         self.inference_parameters = inference_parameters
@@ -192,17 +186,24 @@ class ClientWrapper:
             self.inference_parameters
         )
 
+        from instructor import Mode, patch # type: ignore[import-untyped]
+        MODEL_PROVIDER_TO_INSTRUCTOR_MODE_OVERRIDE = {
+            "huggingface": Mode.JSON,
+            "deepinfra": Mode.JSON,
+            "together_ai": Mode.JSON
+        }
+
         with DisableLogger('LiteLLM'):
             self.function_calling_client = Client(
-                instructor.patch(litellm.LiteLLM(), mode=self.MODEL_PROVIDER_TO_INSTRUCTOR_MODE_OVERRIDE.get(self.model.provider, instructor.Mode.TOOLS)).chat.completions.create, # type: ignore
+                patch(litellm.LiteLLM(), mode=MODEL_PROVIDER_TO_INSTRUCTOR_MODE_OVERRIDE.get(self.model.provider, Mode.TOOLS)).chat.completions.create, # type: ignore
                 self.model,
                 self.inference_parameters
             )
 
     def encode(self, word: str) -> List[int]:
-        import litellm
+        from litellm import encode # type: ignore[import-untyped]
         import tokenizers  # type: ignore[import-untyped]
-        tokens = litellm.encode(model=self.model.name, text=word)
+        tokens = encode(model=self.model.name, text=word)
         if isinstance(tokens, tokenizers.Encoding):
             return tokens.ids
 

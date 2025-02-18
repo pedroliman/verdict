@@ -1,14 +1,13 @@
+from __future__ import annotations
 from contextlib import nullcontext
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple, Union
+from typing import Dict, List, Tuple, Union
 
-import pandas as pd
 import rich.console
 import rich.layout
 import rich.live
 import rich.panel
 import rich.tree
-from datasets import Dataset
 from PIL import Image
 from typing_extensions import Self
 
@@ -19,7 +18,6 @@ from verdict.dataset import DatasetWrapper
 from verdict.model import ModelSelectionPolicy
 from verdict.schema import Schema
 from verdict.util.exceptions import VerdictDeclarationTimeError
-from verdict.util.experiment import ExperimentConfig, get_experiment_layout
 from verdict.util.log import init_logger, logger
 from verdict.util.misc import keyboard_interrupt_safe
 
@@ -112,10 +110,10 @@ class Pipeline:
     def run_from_dataset(self,
             dataset: DatasetWrapper,
             max_workers: int=128,
-            experiment_config: Optional[ExperimentConfig]=None,
+            experiment_config=None, # verdict.util.experiment.ExperimentConfig
             display: bool=False,
             graceful: bool=False
-        ) -> Tuple[pd.DataFrame, List[str]]:
+        ) -> Tuple["pd.DataFrame", List[str]]: # type: ignore
         self.block = self.block.copy()
 
         init_logger(self.name)
@@ -135,6 +133,7 @@ class Pipeline:
                 execution_layout = rich.layout.Layout(name="execution")
                 execution_tree_layout = rich.layout.Layout(rich.panel.Panel(context.parent_branch, title="Execution Tree"), ratio=1, name="execution")
                 if experiment_config:
+                    from verdict.util.experiment import get_experiment_layout
                     execution_layout.split_column(
                         get_experiment_layout(dataset_df, experiment_config),
                         execution_tree_layout
@@ -174,6 +173,7 @@ class Pipeline:
                     output.append(row_output)
 
             if len(output) > 0:
+                import pandas as pd
                 result_df = pd.merge(
                     dataset_df,
                     pd.DataFrame(output),
@@ -184,6 +184,7 @@ class Pipeline:
                 result_df = dataset_df
 
             if display and experiment_config:
+                from verdict.util.experiment import get_experiment_layout
                 execution_layout["experiment"].update(get_experiment_layout(result_df, experiment_config))
                 live.refresh() # type: ignore
 
@@ -194,10 +195,11 @@ class Pipeline:
         self,
         dataset: List[Schema],
         max_workers: int = 128,
-        experiment_config: Optional[ExperimentConfig] = None,
+        experiment_config=None, # verdict.util.experiment.ExperimentConfig
         display: bool = False,
         graceful: bool = False,
     ) -> Tuple[Dict[str, Schema], List[str]]:
+        from datasets import Dataset # type: ignore[import-untyped]
         vedict_dataset = DatasetWrapper(
             Dataset.from_list([data.model_dump() for data in dataset])
         )
