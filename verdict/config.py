@@ -21,7 +21,7 @@ PROVIDER_RATE_LIMITER: Dict[str, RateLimitPolicy] = {
     }),
     'together_ai': RateLimitPolicy.of(rpm=600, tpm=180_000),
     'openai': RateLimitPolicy({ # tier 1 for gpt-4o-mini
-        TimeWindowRateLimiter(max_value=500, window_seconds=60): 'requests',
+        TimeWindowRateLimiter(max_value=5, window_seconds=60): 'requests',
         TimeWindowRateLimiter(max_value=10_000, window_seconds=60*60*24): 'requests',
         TimeWindowRateLimiter(max_value=200_000, window_seconds=60): 'tokens'
     }),

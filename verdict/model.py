@@ -179,6 +179,8 @@ class ClientWrapper:
 
     def __init__(self, model: Model, **inference_parameters) -> None:
         self.model = model
+        self.model._configure_rate_limiter()
+
         self.inference_parameters = inference_parameters
 
         import litellm
