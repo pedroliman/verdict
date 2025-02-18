@@ -3,6 +3,15 @@ label: "Rate Limiting"
 icon: clock
 ---
 
+!!!
+Place the following snippet at the top of your script to disable any client-side rate-limiting globally.
+
+```python
+from verdict.util import ratelimit
+ratelimit.disable()
+```
+!!!
+
 ## Usage
 In addition to the [`max_workers` parameter](../pipeline.md#usage), which controls the number of worker threads, we provide native support for fine-grained and configurable client-side rate limiting at the `token` and `request`-count level. This is particularly useful when running large ad-hoc experiments in parallel against serverless providers and/or in live production settings. It is also a useful tool for managing/controlling the request pressure on self/dedicated-hosted models, as well as for specifying an upper-bound on inference cost per unit-time.
 
