@@ -54,6 +54,10 @@ class Pipeline:
 
         for node in block_instance.nodes:
             try:
+                if node not in executor.outputs:
+                    logger.debug(f"Node {node} has no output!")
+                    continue
+
                 if not isinstance(executor.outputs[node], Schema): # type: ignore
                     logger.debug(f"Node {node} with output {executor.outputs[node]} is not a Schema") # type: ignore
 
