@@ -11,17 +11,10 @@ from verdict.util.exceptions import VerdictSystemError
 
 
 def disable() -> None:
-    from verdict import config
     from verdict.util.log import logger
+    from verdict.config import state
 
-    config.DEFAULT_RATE_LIMITER = RateLimitPolicy({
-        UnlimitedRateLimiter(): 'requests',
-    })
-    config.PROVIDER_RATE_LIMITER = {
-        provider: config.DEFAULT_RATE_LIMITER
-            for provider in config.PROVIDER_RATE_LIMITER
-    }
-
+    state.rate_limiter_disabled = True
     logger.info("Rate limiting is disabled")
 
 class RateLimiterMetric(Enum):

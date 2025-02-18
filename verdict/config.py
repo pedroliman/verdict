@@ -1,10 +1,17 @@
 import os
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict
 
 from verdict.model import ModelSelectionPolicy
 from verdict.util.ratelimit import (ConcurrentRateLimiter, RateLimitPolicy,
                                     TimeWindowRateLimiter)
+
+# Global state
+@dataclass
+class Config:
+    rate_limiter_disabled: bool = False
+state = Config()
 
 # Defaults
 ## Rate limiting

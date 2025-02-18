@@ -10,7 +10,7 @@ from typing_extensions import Self
 from verdict.schema import Schema
 from verdict.util.exceptions import ConfigurationError
 from verdict.util.misc import DisableLogger
-from verdict.util.ratelimit import RateLimitConfig, RateLimitPolicy
+from verdict.util.ratelimit import RateLimitConfig, RateLimitPolicy, UnlimitedRateLimiter
 
 
 class Model(ABC):
@@ -22,7 +22,11 @@ class Model(ABC):
 
     def _configure_rate_limiter(self) -> None:
         from verdict import config
-        if self.rate_limiter is None:
+        if config.state.rate_limiter_disabled:
+            rate_limit = RateLimitPolicy({
+                UnlimitedRateLimiter(): 'requests',
+            })
+        elif self.rate_limiter is None:
             rate_limit = config.DEFAULT_RATE_LIMITER
         elif isinstance(self.rate_limiter, dict):
             rate_limit = RateLimitPolicy(self.rate_limiter)
