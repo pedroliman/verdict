@@ -40,7 +40,8 @@ This is the foundation of **Verdict**, our library for scaling up judge-time com
 
 Verdict provides the primitives (`Unit`; `Layer`; `Block`), composition of primitives, and execution framework for building complex, composable, compound judge protocols. Instead of a single LLM call, Verdict judges synthesize multiple units of reasoning, verification, debate, and aggregation. 
 
-> Verdict's primary contributions are as follows:
+Verdict's primary contributions are as follows:
+
 > [!IMPORTANT]
 > 
 > 1. Verdict provides a **single interface** for implementing a potpourri of prompting strategies, bias mitigations, and architectures grounded in frontier research. We support insights from the fields of automated evaluation, scalable oversight, safety, fact-checking, reward modeling, and more. 
