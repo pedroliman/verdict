@@ -10,6 +10,7 @@
 </div>
 
 ```bash
+# use your preferred environment manager
 conda create -n verdict python=3.12 # 3.9+
 conda activate verdict
 
