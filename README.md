@@ -17,9 +17,9 @@ pip install verdict
 ----
 
 Verdict is a declarative framework for specifying and executing compound LLM-as-a-judge systems. It is
-- Plug-and-play across providers/models, prompts, extraction methods, and judge protocols — allowing for rapid iteration and tweaking.
-- Massively concurrent out-of-the-box and can easily coordinate thousands of LLM calls and responses simultaneously.
-- Arbitrarily composable, with dependency graph primitives found across the LLM-as-a-judge research literature.
+- Plug-and-play across models, prompts, extraction methods, judge protocols — allowing for rapid iteration.
+- Concurrency model that can easily coordinate thousands of LLM calls simultaneously.
+- Arbitrarily composable dependency graph with primitives from the research literature.
 - Rate-limited on the client-side, so you never lose experiment results halfway through.
 - Integrated with [DSPy](https://github.com/stanfordnlp/dspy) for use as a metric in AI system optimization; and more to come soon!
 - SOTA-level on a variety of benchmarks with minimal fitting and a fraction of the inference time.
