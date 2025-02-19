@@ -18,12 +18,12 @@ pip install verdict
 ## Table of Contents
 1. [Building Judges that Actually Work](#building-judges-that-actually-work)
 2. [Verdict Scales Up Judge-Time Compute](#verdict-scales-up-judge-time-compute)
-3. [A Simple Example](#a-simple-example)
+3. [A Simple Example of Hierarchical Reasoning](#a-simple-example-of-hierarchical-reasoning)
 4. [Verdict for Evaluation, Guardrails, Verification, and Reinforcement Learning](#verdict-for-evaluation-guardrails-verification-and-reinforcement-learning)
 5. [Learn More](#learn-more)
 
 ## Building Judges that Actually Work
-Automated correctness checks using LLMs, a.k.a. *LLM-as-a-judge*, is a widely adopted practice for both developers and researchers building LLM-powered applications. However, LLM judges are painfully unreliable. Today's LLM judges struggle with inconsistent output formats, mode collapse, miscalibrated confidence, superficial biases towards answer positioning, data frequency, model family, length, style, tone, safety, and numerous other failure modes. This makes the problem of evaluation doubly onerous: both the evaluator and evaluatee are unreliable. 
+Automated correctness checks using LLMs, a.k.a. *LLM-as-a-judge*, is a widely adopted practice for both developers and researchers building LLM-powered applications. However, LLM judges are painfully unreliable. Today's LLM judges struggle with inconsistent output formats, mode collapse, miscalibrated confidence, superficial biases towards answer positioning, data frequency, model family, length, style, tone, safety, and numerous other failure modes. This makes the problem of evaluation twice the trouble, as both the evaluator and evaluatee may be unreliable. 
 
 One promising solution is to **scale up judge-time compute** &mdash; the number of inference tokens used for judging. We do this in a very particular way: by composing judge architectural primitives grounded in the scalable oversight, automated evaluation, and generative reward modeling research. 
 
@@ -50,7 +50,7 @@ Verdict's primary contributions are as follows:
 
 Scaling judge-time compute works astonishingly well. For example, Verdict judges achieve [SOTA or near-SOTA](https://verdict.haizelabs.com/) for content moderation, hallucination detection, and fact-checking. 
 
-## A Simple Example
+## A Simple Example of Hierarchical Reasoning
 Say you have an AI agent that you'd like to evaluate on politeness. A first stab may be to simply prompt a Verdict `JudgeUnit` as follows
 
 ```python
@@ -91,7 +91,7 @@ Pipeline() \
   """).via('gpt-4o-mini', retries=3, temperature=0.0)
 ```
 
-Applying this principle in various configurations allows us to approach the pareto-frontier of performance and inference time.
+Applying this principle in various configurations allows us to approach the pareto-frontier of performance and inference time. Read on in our [Getting Started](https://verdict.haizelabs.com/docs) guide!
 
 ## Verdict for Evaluation, Guardrails, Verification, and Reinforcement Learning
 Verdict judges can be used anywhere to replace human feedback and verification. Naturally, they apply to at least the following scenarios:
