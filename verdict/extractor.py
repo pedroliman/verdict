@@ -14,7 +14,8 @@ from verdict.model import ClientWrapper, Model, ModelSelectionPolicy
 from verdict.prompt import PromptMessage
 from verdict.scale import DiscreteScale
 from verdict.schema import Schema
-from verdict.util.exceptions import ConfigurationError, VerdictExecutionTimeError
+from verdict.util.exceptions import (ConfigurationError,
+                                     VerdictExecutionTimeError)
 
 
 @dataclass
@@ -101,7 +102,8 @@ class RawExtractor(Extractor):
         )
 
         def streaming_extract(output, messages) -> Iterator[Schema]:
-            from litellm import stream_chunk_builder # type: ignore[import-untyped]
+            from litellm import \
+                stream_chunk_builder  # type: ignore[import-untyped]
 
             chunks = []
             for chunk in output:

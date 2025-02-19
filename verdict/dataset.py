@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 from pathlib import Path
 from typing import Any, Callable, Dict, Iterator, List, Optional, Tuple
 
@@ -86,7 +87,7 @@ class DatasetWrapper(Iterator[Tuple[Dict[str, Any], Schema]]):
             max_samples: Optional[int]=None,
             expand: bool=False,
     ) -> Dict[str, "DatasetWrapper"]:
-        from datasets import Dataset # type: ignore[import-untyped]
+        from datasets import Dataset  # type: ignore[import-untyped]
         def expand_dataset(dataset: Dataset) -> Dataset:
             expanded_data = []
             for row in dataset:
@@ -115,7 +116,7 @@ class DatasetWrapper(Iterator[Tuple[Dict[str, Any], Schema]]):
             split_column: Optional[str]=None,
             max_samples: Optional[int]=None,
     ):
-        from datasets import Dataset # type: ignore[import-untyped]
+        from datasets import Dataset  # type: ignore[import-untyped]
         if split_column is not None:
             return DatasetWrapper.from_hf({
                 str(split): Dataset.from_pandas(_df)

@@ -11,15 +11,15 @@ from verdict.util.exceptions import VerdictSystemError
 
 
 def disable() -> None:
-    from verdict.util.log import logger
     from verdict.config import state
+    from verdict.util.log import logger
 
     state.rate_limiter_disabled = True
     logger.info("Rate limiting is disabled. All requests will follow an UnlimitedRateLimiter.")
 
 def enable() -> None:
-    from verdict.util.log import logger
     from verdict.config import state
+    from verdict.util.log import logger
 
     state.rate_limiter_disabled = False
     logger.info("Rate limiting is enabled. All requests will fallback to their configured RateLimitPolicy.")

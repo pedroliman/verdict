@@ -7,6 +7,7 @@ from verdict.model import ModelSelectionPolicy
 from verdict.util.ratelimit import (ConcurrentRateLimiter, RateLimitPolicy,
                                     TimeWindowRateLimiter)
 
+
 # Global state
 @dataclass
 class Config:

@@ -56,17 +56,18 @@ def accuracy(df: "pd.DataFrame", ground_truth_col: str, prediction_col: str) -> 
 
 @metric()
 def kappa(df: "pd.DataFrame", ground_truth_col: str, prediction_col: str) -> Result: # type: ignore
-    from sklearn.metrics import cohen_kappa_score # type: ignore[import-untyped]
+    from sklearn.metrics import \
+        cohen_kappa_score  # type: ignore[import-untyped]
     return cohen_kappa_score(df[ground_truth_col], df[prediction_col])
 
 @metric()
 def kendall_tau(df: "pd.DataFrame", ground_truth_col: str, prediction_col: str) -> Result: # type: ignore
-    from scipy.stats import kendalltau # type: ignore[import-untyped]
+    from scipy.stats import kendalltau  # type: ignore[import-untyped]
     return kendalltau(df[ground_truth_col], df[prediction_col]).statistic
 
 @metric()
 def spearman_rho(df: "pd.DataFrame", ground_truth_col: str, prediction_col: str) -> Result: # type: ignore
-    from scipy.stats import spearmanr # type: ignore[import-untyped]
+    from scipy.stats import spearmanr  # type: ignore[import-untyped]
     return spearmanr(df[ground_truth_col], df[prediction_col]).statistic
 
 @metric()

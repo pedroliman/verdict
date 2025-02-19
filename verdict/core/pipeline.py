@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 from contextlib import nullcontext
 from pathlib import Path
 from typing import Dict, List, Tuple, Union
@@ -199,7 +200,7 @@ class Pipeline:
         display: bool = False,
         graceful: bool = False,
     ) -> Tuple[Dict[str, Schema], List[str]]:
-        from datasets import Dataset # type: ignore[import-untyped]
+        from datasets import Dataset  # type: ignore[import-untyped]
         vedict_dataset = DatasetWrapper(
             Dataset.from_list([data.model_dump() for data in dataset])
         )

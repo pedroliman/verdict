@@ -10,7 +10,8 @@ from typing_extensions import Self
 from verdict.schema import Schema
 from verdict.util.exceptions import ConfigurationError
 from verdict.util.misc import DisableLogger
-from verdict.util.ratelimit import RateLimitConfig, RateLimitPolicy, UnlimitedRateLimiter
+from verdict.util.ratelimit import (RateLimitConfig, RateLimitPolicy,
+                                    UnlimitedRateLimiter)
 
 
 class Model(ABC):
@@ -70,7 +71,7 @@ class ProviderModel(Model):
 
         object.__setattr__(self, 'use_nonce', True)
 
-        from litellm import get_llm_provider # type: ignore[import-untyped]
+        from litellm import get_llm_provider  # type: ignore[import-untyped]
         _, provider, _, _ = get_llm_provider(self.name)
         object.__setattr__(self, 'provider', provider)
 
@@ -164,7 +165,7 @@ specified inference_parameters: {self.inference_parameters}
             parameters['stream'] = streaming
             if response_model is not None:
                 # needed for streaming structured output
-                from instructor import Partial # type: ignore[import-untyped]
+                from instructor import Partial  # type: ignore[import-untyped]
                 response_model = Partial[response_model]
             if 'timeout' in self.inference_parameters:
                 parameters['stream_timeout'] = self.inference_parameters['timeout']
@@ -196,7 +197,7 @@ class ClientWrapper:
             self.inference_parameters
         )
 
-        from instructor import Mode, patch # type: ignore[import-untyped]
+        from instructor import Mode, patch  # type: ignore[import-untyped]
         MODEL_PROVIDER_TO_INSTRUCTOR_MODE_OVERRIDE = {
             "huggingface": Mode.JSON,
             "deepinfra": Mode.JSON,
@@ -219,8 +220,8 @@ class ClientWrapper:
             )
 
     def encode(self, word: str) -> List[int]:
-        from litellm import encode # type: ignore[import-untyped]
         import tokenizers  # type: ignore[import-untyped]
+        from litellm import encode  # type: ignore[import-untyped]
         tokens = encode(model=self.model.name, text=word)
         if isinstance(tokens, tokenizers.Encoding):
             return tokens.ids
