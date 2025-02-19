@@ -87,4 +87,4 @@ class HallucinationDetectionPrompt(Prompt):
 ```
 
 ## Pinned Units
-Note that a `.pin`'d Unit cannot include `{source.*}` variables in its prompt, since this directs the execution engine to run once and share results across all samples, the `source` context is not available at runtime.
+Note that a `.pin`'d Unit cannot include `{source.*}` variables in its prompt. Since this directs the execution engine to run once and share results across all samples, the `source` context is not available at runtime.

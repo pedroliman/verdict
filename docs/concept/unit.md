@@ -2,7 +2,6 @@
 label: "Unit"
 icon: git-commit
 order: 11
-expanded: true
 ---
 
 ```python

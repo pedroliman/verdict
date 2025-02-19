@@ -190,7 +190,7 @@ class GraphExecutor:
 
     def __init__(self, max_workers: Optional[int] = None) -> None:
         soft_fd_limit, hard_fd_limit = resource.getrlimit(resource.RLIMIT_NOFILE)
-        requested_soft_fd_limit = max(soft_fd_limit, min(hard_fd_limit, int(max_workers * 4.0)))
+        requested_soft_fd_limit = max(soft_fd_limit, min(hard_fd_limit, 50_000_000)) # TODO: make this a function of max_workers
         if requested_soft_fd_limit < hard_fd_limit:
             base_logger.debug(f"Setting file descriptor limit to {requested_soft_fd_limit}")
             resource.setrlimit(resource.RLIMIT_NOFILE, (requested_soft_fd_limit, hard_fd_limit))

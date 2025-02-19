@@ -4,7 +4,20 @@ icon: zap
 order: 9
 ---
 
-# Quickstart
+# Verdict
+
+!!!primary Tip
+Jump right into our [Concepts Overview](./concept/overview.md) for a birds-eye view of Verdict execution flow.
+!!!
+
+Verdict is a declarative framework for specifying and executing compound LLM-as-a-judge systems. It is
+- Plug-and-play across providers/models, prompts, extraction methods, and judge protocols allowing for rapid iteration and tweaking.
+- Arbitrarily composable, with dependency graph primitives found across the LLM-as-a-judge research literature.
+- Massively concurrent out-of-the-box and can easily coordinate thousands of LLM calls and responses simultaneously.
+- Rate-limited on the client-side, so you never lose experiment results halfway through.
+- Integrated with DSPy for use as a metric in AI system optimization; and more to come soon!
+
+## Quickstart
 
 Verdict allows you to define arbitrary compound LLM-as-a-judge systems in a declarative manner. Here, we show an example of a Verdict judging pipeline that enables us to achieve SOTA  **(+14.5% over GPT-4o)** on the ExpertQA hallucination detection dataset.
 
@@ -78,7 +91,7 @@ We can use a `Layer` to layer arbitrary subgraphs together. We make it [easy to 
 We aggregate the results of the three judges+verifiers with a built-in `MaxPoolUnit`. This is a simple [transformation](./concept/transform.md) that performs a majority vote. Verdict allows you to place arbitrary logic at any stage of the pipeline using a `MapUnit`.
 
 ### Execution
-We can run this pipeline over a test sample. Verdict will send out each LLM call in parallel as soon as all dependencies are met.
+We can run this pipeline over a test sample. Verdict will send out each LLM call in its own worker thread as soon as all dependencies are met.
 ```python
 from verdict.schema import Schema
 

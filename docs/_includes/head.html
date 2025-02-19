@@ -1,2 +1,24 @@
 <!-- Add content to _includes/head.html to include here -->
-<link href="/static/styles.css?v={{ nonce }}" rel="stylesheet">
+<!-- <link href="/static/styles.css?v={{ nonce }}" rel="stylesheet"> -->
+<style>
+    .docs-markdown h6, .docs-markdown p:not(.hidden) {
+        margin-bottom: 0.5rem !important;
+    }
+
+    .text-base {
+        font-size: 0.9em !important;
+    }
+
+    .text-sm {
+        font-size: 0.85em !important;
+    }
+
+    code[class*=language-], pre[class*=language-] {
+        font-size: 0.9em !important;
+        line-height: 1.25 !important;
+    }
+
+    .line-numbers .text-xs {
+        font-size: 0.7075em !important;
+    }
+</style>
