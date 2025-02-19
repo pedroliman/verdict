@@ -18,7 +18,7 @@ Verdict is a declarative framework for specifying and executing compound LLM-as-
 - SOTA-level on a variety of benchmarks with minimal fitting and a fraction of the inference time.
 
 ## Quickstart
-Verdict allows you to define arbitrary compound LLM-as-a-judge systems in a declarative manner. Here, we show an example of a Verdict judging pipeline that enables us to achieve SOTA  **(+14.5% over GPT-4o)** on the ExpertQA hallucination detection dataset.
+Verdict allows you to define arbitrary compound LLM-as-a-judge systems in a declarative manner. Here, we show an example of a Verdict judging pipeline that enables us to achieve SOTA  **(+14.5% over GPT-4o and +9.2% over o1)** on the ExpertQA hallucination detection dataset.
 
 First, install the package with `pip install verdict` (or with `uv`).
 
