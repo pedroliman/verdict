@@ -108,7 +108,7 @@ print(response['HierarchicalVerifier_root.block.block.unit[Map MaxPool]_choice']
 ```
 
 ### Datasets
-We'll pull in the `LLM-AggreFact` dataset from HuggingFace, filter it to only include the `ExpertQA` dataset, and prepare it for a Verdict pipeline.
+We'll pull in the `LLM-AggreFact` dataset from HuggingFace, filter it to only include the `ExpertQA` dataset, and prepare it for a Verdict pipeline. It requires HuggingFace authorization, so be sure to visit the dataset page [here](https://huggingface.co/datasets/lytang/LLM-AggreFact) and login in your script below.
 ```python
 from datasets import load_dataset
 from verdict.dataset import DatasetWrapper
@@ -116,6 +116,10 @@ from verdict.dataset import DatasetWrapper
 # We'll disable Verdict rate-limiting for this example. By default, Verdict follows the OpenAI Tier 1 rate limits for `gpt-4o-mini`.
 from verdict.util import ratelimit
 ratelimit.disable()
+
+# HuggingFace dataset requires authorization, so we need to login first.
+# from huggingface_hub import login
+# login()
 
 # Load the ExpertQA dataset (https://arxiv.org/pdf/2309.07852)
 dataset = DatasetWrapper.from_hf(
