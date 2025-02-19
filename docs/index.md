@@ -20,7 +20,7 @@ Verdict is a declarative framework for specifying and executing compound LLM-as-
 ## Quickstart
 Verdict allows you to define arbitrary compound LLM-as-a-judge systems in a declarative manner. Here, we show an example of a Verdict judging pipeline that enables us to achieve SOTA  **(+14.5% over GPT-4o and +9.2% over o1)** on the ExpertQA hallucination detection dataset.
 
-First, install the package with `pip install verdict` (or with `uv`).
+First, set up a fresh environment and install the package with `pip install verdict` (or with `uv`).
 
 We'll define a judging protocol that consists of
 1. A GPT-4o judge who initially determines whether a hallucination is present

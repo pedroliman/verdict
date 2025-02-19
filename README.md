@@ -10,6 +10,9 @@
 </div>
 
 ```bash
+conda create -n verdict python=3.12 # 3.9+
+conda activate verdict
+
 pip install verdict
 ```
 </div>
