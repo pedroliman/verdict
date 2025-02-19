@@ -2,7 +2,7 @@
 
 [<img src="https://verdict.haizelabs.com/hero.png?" alt="Verdict Logo" width="77.8%"/>](https://verdict.haizelabs.com/docs)
 
-**[arXiv](https://verdict.haizelabs.com/draft.pdf) | [Docs](https://verdict.haizelabs.com/docs) | [Results](https://verdict.haizelabs.com)**
+**[Whitepaper](https://verdict.haizelabs.com/whitepaper.pdf) | [Docs](https://verdict.haizelabs.com/docs) | [Results](https://verdict.haizelabs.com)**
 
 ``` bash
 pip install verdict
