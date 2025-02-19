@@ -54,8 +54,11 @@ class StreamingLayoutManager:
 
             text.plain = ""
             for k, v in response.model_dump().items():
-                text.append(f"{k}:\n", style="bold underline")
-                text.append(str(v))
+                text.append(f"{k}:", style="bold underline")
+                text.append(f" {v}\n")
+
+            self.text.plain = ""
+            self.text.append(text)
 
             # detect overflow
             try:
@@ -76,8 +79,8 @@ class StreamingLayoutManager:
                         self.text.plain = ""
                         self.text.append("...\n" + "\n".join(map(lambda line: line.strip(" │"), rendered_output.split("\n")[2+height_overflow:-3])))
             except Exception:
-                self.text.append(f"{k}:\n", style="bold underline")
-                self.text.append(str(v))
+                self.text.plain = ""
+                self.text.append(text)
 
     def __init__(self, layout: rich.layout.Layout, capacity: int=5) -> None:
         self.lock = threading.Lock()
@@ -193,7 +196,7 @@ class BranchManager:
                             def clean(output: Any) -> str:
                                 if isinstance(output, float):
                                     return f"{output:.4f}"
-                                elif isinstance(output, str):
+                                elif isinstance(output, str) and len(output) > 4:
                                     return "…"
                                 return str(output)
 
