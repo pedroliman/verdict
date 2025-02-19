@@ -4,7 +4,7 @@ url: verdict.haizelabs.com/docs
 
 branding:
   title: Verdict
-  label: BETA
+  label: 0.2.0
   logo: /static/logos/logo.png
   logoDark: /static/logos/logo.png
   logoAlign: left
