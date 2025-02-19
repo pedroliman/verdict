@@ -36,9 +36,7 @@ DEFAULT_PROVIDER_STREAM_TIMEOUT: int = 120
 
 ## Inference parameters
 DEFAULT_MODEL_SELECTION_POLICY: ModelSelectionPolicy = ModelSelectionPolicy.from_name('gpt-4o-mini', retries=3)
-DEFAULT_INFERENCE_PARAMS: dict[str, Any] = {
-    'temperature': 0.6
-}
+DEFAULT_INFERENCE_PARAMS: dict[str, Any] = {}
 
 ## Token extraction prompt
 TOKEN_EXTRACTOR_SPECIFICATION_PROMPT: str = """

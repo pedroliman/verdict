@@ -20,6 +20,9 @@ class Model(ABC):
     rate_limiter: Optional[Union[RateLimitPolicy, RateLimitConfig]] = field(repr=False, default=None)
     rate_limit: RateLimitPolicy = field(init=False, repr=True)
 
+    def __post_init__(self) -> None:
+        object.__setattr__(self, 'provider', self.name.split('/')[0])
+
     def _configure_rate_limiter(self) -> None:
         from verdict import config
         if config.state.rate_limiter_disabled:
@@ -40,10 +43,6 @@ class Model(ABC):
     @property
     def char(self) -> str:
         return self.name.split('/')[-1]
-
-    @property
-    def provider(self) -> str:
-        return self.name.split('/')[0]
 
     def __str__(self) -> str:
         components = self.name.split('/')
@@ -67,10 +66,13 @@ class ProviderModel(Model):
     rate_limit: RateLimitPolicy = field(init=False, repr=True)
 
     def __post_init__(self) -> None:
+        super().__post_init__()
+
         object.__setattr__(self, 'use_nonce', True)
 
         from litellm import get_llm_provider # type: ignore[import-untyped]
         _, provider, _, _ = get_llm_provider(self.name)
+        object.__setattr__(self, 'provider', provider)
 
         from verdict import config
         if self.rate_limiter is None:
@@ -100,6 +102,8 @@ class vLLMModel(Model):
     rate_limit: RateLimitPolicy = field(init=False, repr=True)
 
     def __post_init__(self) -> None:
+        super().__post_init__()
+
         object.__setattr__(self, 'use_nonce', False)
         self._configure_rate_limiter()
 
@@ -199,9 +203,17 @@ class ClientWrapper:
             "together_ai": Mode.JSON
         }
 
+        MODEL_TO_INSTRUCTOR_MODE_OVERRIDE = {
+            "openai/o1": Mode.JSON_O1,
+            "openai/o1-2024-12-17": Mode.JSON_O1
+        }
+
         with DisableLogger('LiteLLM'):
             self.function_calling_client = Client(
-                patch(litellm.LiteLLM(), mode=MODEL_PROVIDER_TO_INSTRUCTOR_MODE_OVERRIDE.get(self.model.provider, Mode.TOOLS)).chat.completions.create, # type: ignore
+                patch(litellm.LiteLLM(), mode=MODEL_TO_INSTRUCTOR_MODE_OVERRIDE.get(
+                    f"{self.model.provider}/{self.model.char}",
+                    MODEL_PROVIDER_TO_INSTRUCTOR_MODE_OVERRIDE.get(self.model.provider, Mode.TOOLS)
+                )).chat.completions.create, # type: ignore
                 self.model,
                 self.inference_parameters
             )
