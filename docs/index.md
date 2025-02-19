@@ -5,7 +5,6 @@ order: 9
 ---
 
 # Verdict
-
 !!!primary Tip
 Jump right into our [Concepts Overview](./concept/overview.md) for a birds-eye view of Verdict execution flow.
 !!!
@@ -16,9 +15,9 @@ Verdict is a declarative framework for specifying and executing compound LLM-as-
 - Massively concurrent out-of-the-box and can easily coordinate thousands of LLM calls and responses simultaneously.
 - Rate-limited on the client-side, so you never lose experiment results halfway through.
 - Integrated with DSPy for use as a metric in AI system optimization; and more to come soon!
+- SOTA-level on a variety of benchmarks with minimal fitting and a fraction of the inference time.
 
 ## Quickstart
-
 Verdict allows you to define arbitrary compound LLM-as-a-judge systems in a declarative manner. Here, we show an example of a Verdict judging pipeline that enables us to achieve SOTA  **(+14.5% over GPT-4o)** on the ExpertQA hallucination detection dataset.
 
 First, install the package with `pip install verdict` (or with `uv`).
