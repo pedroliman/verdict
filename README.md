@@ -1,8 +1,8 @@
 <div align="center">
 
-<img src="https://verdict.haizelabs.com/hero.png?" href="https://verdict.haizelabs.com/docs" alt="Verdict Logo" width="77.8%"/>
+[<img src="https://verdict.haizelabs.com/hero.png?" alt="Verdict Logo" width="77.8%"/>](https://verdict.haizelabs.com/docs)
 
-**[Paper](https://verdict.haizelabs.com/draft.pdf) | [Docs](https://verdict.haizelabs.com/docs) | [Results](https://verdict.haizelabs.com)**
+**[arXiv](https://verdict.haizelabs.com/draft.pdf) | [Docs](https://verdict.haizelabs.com/docs) | [Results](https://verdict.haizelabs.com)**
 
 ``` bash
 pip install verdict
@@ -16,14 +16,12 @@ pip install verdict
 [![Discord](https://img.shields.io/discord/1333947884462149682)](https://discord.gg/CzfKnCMvwx)
 
 ## Table of Contents
-
 1. [Building Judges that Actually Work](#building-judges-that-actually-work)
 2. [Verdict Scales Up Judge-Time Compute](#verdict-scales-up-judge-time-compute)
 3. [Verdict for Evaluation, Guardrails, Verification, and Reinforcement Learning](#verdict-for-evaluation-guardrails-verification-and-reinforcement-learning)
 4. [Learn More](#learn-more)
 
 ## Building Judges that Actually Work
-
 Automated correctness checks using LLMs, a.k.a. *LLM-as-a-judge*, is a widely adopted practice for both developers and researchers building LLM-powered applications. However, LLM judges are painfully unreliable. Today's LLM judges struggle with inconsistent output formats, mode collapse, miscalibrated confidence, superficial biases towards answer positioning, data frequency, model family, length, style, tone, safety, and numerous other failure modes. This makes the problem of evaluation doubly onerous: both the evaluator and evaluatee are unreliable. 
 
 One promising solution is to **scale up judge-time compute** &mdash; the number of inference tokens used for judging. We do this in a very particular way: by composing judge architectural primitives grounded in the scalable oversight, automated evaluation, and generative reward modeling research. 
@@ -35,9 +33,7 @@ This is the foundation of **Verdict**, our library for scaling up judge-time com
   <figcaption>Example of a Verdict judge protocol: three pairs of LLMs engage in debates, and the outcomes of these debates are aggregated to produce a final verdict.</figcaption>
 </figure>
 
-
 ## Verdict Scales Up Judge-Time Compute
-
 Verdict provides the primitives (`Unit`; `Layer`; `Block`), composition of primitives, and execution framework for building complex, composable, compound judge protocols. Instead of a single LLM call, Verdict judges synthesize multiple units of reasoning, verification, debate, and aggregation. 
 
 Verdict's primary contributions are as follows:
@@ -54,14 +50,13 @@ Verdict's primary contributions are as follows:
 Scaling judge-time compute works astonishingly well. For example, Verdict judges achieve [SOTA or near-SOTA](https://verdict.haizelabs.com/) for content moderation, hallucination detection, and fact-checking. 
 
 ## Verdict for Evaluation, Guardrails, Verification, and Reinforcement Learning
-
 Verdict judges can be used anywhere to replace human feedback and verification. Naturally, they apply to at least the following scenarios:
 
 > [!TIP]
 > 1. **Automated Evaluation of AI Applications**. Verdict judges enable *tailored* and *automated* evaluation of AI applications.
 > 2. **Run-Time Guardrails**. Verdict judges are *guardrails* that sit on top of AI applications running in production.
-> 3. **Test-Time Compute Scaling**. Verdict judges are verifiers that help rank, prune, and select candidates during test-time compute scaling.
-> 4. **Reward Modeling & Reinforcement Learning**. Verdict judges provide signal in reinforcement learning &mdash; particularly in settings where rewards are not verifiable.
+> 3. **Test-Time Compute Scaling**. Verdict judges are *verifiers* that help rank, prune, and select candidates during test-time compute scaling.
+> 4. **Reward Modeling & Reinforcement Learning**. Verdict judges provide *signal* in reinforcement learning &mdash; particularly in settings where rewards are not verifiable.
 
 <!-- In each of the above scenarios, Verdict judges are the clear choice of Evaluator, Verifier, or Reward Model for at least the following reasons:
 
@@ -72,5 +67,4 @@ Verdict judges can be used anywhere to replace human feedback and verification. 
 
 
 ## Learn More
-
 To learn more about applying Verdict for your judging use cases, please find us at `contact@haizelabs.com`.
