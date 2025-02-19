@@ -18,8 +18,9 @@ pip install verdict
 ## Table of Contents
 1. [Building Judges that Actually Work](#building-judges-that-actually-work)
 2. [Verdict Scales Up Judge-Time Compute](#verdict-scales-up-judge-time-compute)
-3. [Verdict for Evaluation, Guardrails, Verification, and Reinforcement Learning](#verdict-for-evaluation-guardrails-verification-and-reinforcement-learning)
-4. [Learn More](#learn-more)
+3. [A Simple Example](#a-simple-example)
+4. [Verdict for Evaluation, Guardrails, Verification, and Reinforcement Learning](#verdict-for-evaluation-guardrails-verification-and-reinforcement-learning)
+5. [Learn More](#learn-more)
 
 ## Building Judges that Actually Work
 Automated correctness checks using LLMs, a.k.a. *LLM-as-a-judge*, is a widely adopted practice for both developers and researchers building LLM-powered applications. However, LLM judges are painfully unreliable. Today's LLM judges struggle with inconsistent output formats, mode collapse, miscalibrated confidence, superficial biases towards answer positioning, data frequency, model family, length, style, tone, safety, and numerous other failure modes. This makes the problem of evaluation doubly onerous: both the evaluator and evaluatee are unreliable. 
@@ -29,7 +30,7 @@ One promising solution is to **scale up judge-time compute** &mdash; the number 
 This is the foundation of **Verdict**, our library for scaling up judge-time compute. 
 
 <figure>
-  <img src="prop_opp_image.png" alt="">
+  <img src="https://verdict.haizelabs.com/debate.png" alt="">
   <figcaption>Example of a Verdict judge protocol: three pairs of LLMs engage in debates, and the outcomes of these debates are aggregated to produce a final verdict.</figcaption>
 </figure>
 
@@ -48,6 +49,49 @@ Verdict's primary contributions are as follows:
 <!-- These features enable researchers and practitioners to iterate towards super-frontier judging capabilities with ease. -->
 
 Scaling judge-time compute works astonishingly well. For example, Verdict judges achieve [SOTA or near-SOTA](https://verdict.haizelabs.com/) for content moderation, hallucination detection, and fact-checking. 
+
+## A Simple Example
+Say you have an AI agent that you'd like to evaluate on politeness. A first stab may be to simply prompt a Verdict `JudgeUnit` as follows
+
+```python
+Pipeline() \
+  >> JudgeUnit(DiscreteScale((1, 5))).prompt("""
+    Evaluate the following customer support interaction on politeness.
+
+    {source.conversation}
+
+    Respond with a score between 1 and 5.
+    - 1: Extremely impolite, rude, hostile, or disrespectful
+         ...
+    - 5: Extremely polite. Consistently respectful, friendly, and courteous.
+  """).via('gpt-4o-mini', retries=3, temperature=0.4)
+```
+
+Chain-of-thought prompting can improve response quality. Most Verdict built-ins simulate this by prepending a reasoning/thinking/explanation to the requested response.
+
+```python
+  >> JudgeUnit(DiscreteScale((1, 5)), explanation=True).prompt(""" ...
+```
+
+As shown by the recent success of reasoning models like the `o3`-family, complex reasoning chains can provide major boost in model performance. However, these models are far too slow for many automated evaluation applications, particularly real-time guardrails. Rather than have a powerful model solve the meta-problem of deciding how much reasoning to use each time, Verdict allows you to manually specify the structure of a simpler reasoning chain best suited for the task. For example, we may find that a single round of self-contemplation on if the explanation is reasonable is sufficient to match your intended preference alignment. This allows us to replace an `o1` call with two `gpt-4o-mini` calls.
+
+```python
+Pipeline() \
+  >> JudgeUnit(DiscreteScale((1, 5)), explanation=True).prompt("""
+    ...
+  """).via('gpt-4o-mini', retries=3, temperature=0.4) \
+  >> JudgeUnit(BooleanScale()).prompt("""
+    Check if the given explanation correctly references the source conversation.
+
+    Conversation: {source.conversation}
+    Politeness Score: {previous.score}
+    Explanation: {previous.explanation}
+
+    Return "yes" if the explanation correctly references the source, and "no" otherwise.
+  """).via('gpt-4o-mini', retries=3, temperature=0.0)
+```
+
+Applying this principle in various configurations allows us to approach the pareto-frontier of performance and inference time.
 
 ## Verdict for Evaluation, Guardrails, Verification, and Reinforcement Learning
 Verdict judges can be used anywhere to replace human feedback and verification. Naturally, they apply to at least the following scenarios:
