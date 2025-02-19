@@ -4,16 +4,25 @@
 
 **[Whitepaper](https://verdict.haizelabs.com/whitepaper.pdf) | [Docs](https://verdict.haizelabs.com/docs) | [Results](https://verdict.haizelabs.com)**
 
-``` bash
+[![PyPI version](https://img.shields.io/pypi/v/verdict)](https://pypi.org/project/verdict/)
+[![Downloads](https://img.shields.io/pypi/dm/verdict)](https://pypistats.org/packages/verdict)
+[![Discord](https://img.shields.io/discord/1333947884462149682)](https://discord.gg/CzfKnCMvwx)
+</div>
+
+```bash
 pip install verdict
 ```
 </div>
 
 ----
 
-[![PyPI version](https://img.shields.io/pypi/v/verdict)](https://pypi.org/project/verdict/)
-[![Downloads](https://img.shields.io/pypi/dm/verdict)](https://pypistats.org/packages/verdict)
-[![Discord](https://img.shields.io/discord/1333947884462149682)](https://discord.gg/CzfKnCMvwx)
+Verdict is a declarative framework for specifying and executing compound LLM-as-a-judge systems. It is
+- Plug-and-play across providers/models, prompts, extraction methods, and judge protocols — allowing for rapid iteration and tweaking.
+- Massively concurrent out-of-the-box and can easily coordinate thousands of LLM calls and responses simultaneously.
+- Arbitrarily composable, with dependency graph primitives found across the LLM-as-a-judge research literature.
+- Rate-limited on the client-side, so you never lose experiment results halfway through.
+- Integrated with [DSPy](https://github.com/stanfordnlp/dspy) for use as a metric in AI system optimization; and more to come soon!
+- SOTA-level on a variety of benchmarks with minimal fitting and a fraction of the inference time.
 
 ## Table of Contents
 1. [Building Judges that Actually Work](#building-judges-that-actually-work)
@@ -91,7 +100,7 @@ Pipeline() \
   """).via('gpt-4o-mini', retries=3, temperature=0.0)
 ```
 
-Applying this principle in various configurations allows us to approach the pareto-frontier of performance and inference time. Read on in our [Getting Started](https://verdict.haizelabs.com/docs) guide!
+Applying this principle in various configurations allows us to make informed tradeoffs between performance and inference time. Read on in our [Getting Started](https://verdict.haizelabs.com/docs) guide!
 
 ## Verdict for Evaluation, Guardrails, Verification, and Reinforcement Learning
 Verdict judges can be used anywhere to replace human feedback and verification. Naturally, they apply to at least the following scenarios:
