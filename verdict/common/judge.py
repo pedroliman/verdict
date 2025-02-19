@@ -40,13 +40,13 @@ class BestOfKJudgeUnit(Unit):
     class OutputSchema(Schema):
         chosen: str
     
-    def __init__(self, k: int=2, options: Optional[DiscreteScale]=None, explanation: bool=False, original: bool=False, **kwargs):
+    def __init__(self, k: int=2, response_options: Optional[DiscreteScale]=None, explanation: bool=False, original: bool=False, **kwargs):
         self.k = k
         self.explanation = explanation
         self.original = original
 
-        options = options or DiscreteScale(list(string.ascii_uppercase[:k]))
-        self.ResponseSchema = Schema.infer(choice=options) # type: ignore
+        response_options = response_options or DiscreteScale(list(string.ascii_uppercase[:k]))
+        self.ResponseSchema = Schema.infer(choice=response_options) # type: ignore
 
         self.scale = self.ResponseSchema.get_scale("choice")
 
@@ -72,20 +72,24 @@ class BestOfKJudgeUnit(Unit):
         return self.OutputSchema(**fields)
 
 class PairwiseJudgeUnit(BestOfKJudgeUnit):
-    _char: str = "PairwiseJudge"
     """
     Judge unit for pairwise comparison (e.g., 'Response A' vs 'Response B').
     Options should be LLM responses.
     """
+
+    _char: str = "PairwiseJudge"
+
     def __init__(self, response_options: Optional[DiscreteScale]=None, explanation: bool=False, original: bool=False, **kwargs):
-        super().__init__(k=2, options=response_options, explanation=explanation, original=original, **kwargs)
+        super().__init__(k=2, response_options=response_options, explanation=explanation, original=original, **kwargs)
 
 
 class CategoricalJudgeUnit(BestOfKJudgeUnit):
-    _char: str = "CategoricalJudge"
     """
     Judge unit for categorical decisions (e.g., 'Yes' or 'No', 'Harmful' or 'Not Harmful', 'Hallucination' or 'No Hallucination').
     Options should represent discrete categorical choices.
     """
+
+    _char: str = "CategoricalJudge"
+
     def __init__(self, categories: Optional[DiscreteScale]=None, explanation: bool=False, original: bool=False, **kwargs):
-        super().__init__(k=2, options=categories, explanation=explanation, original=original, **kwargs)
+        super().__init__(k=2, response_options=categories, explanation=explanation, original=original, **kwargs)
