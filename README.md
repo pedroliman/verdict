@@ -17,6 +17,8 @@ conda activate verdict
 pip install verdict # or uv
 ```
 
+<p align="center"><img src="https://verdict.haizelabs.com/demo-no-animation.gif" alt="Verdict Demo on 10 Samples from ExpertQA"/></p>
+
 ----
 
 Verdict is a declarative framework for specifying and executing compound LLM-as-a-judge systems. It is
@@ -27,10 +29,8 @@ Verdict is a declarative framework for specifying and executing compound LLM-as-
 - Integrated with [DSPy](https://github.com/stanfordnlp/dspy) for use as a metric in AI system optimization; and more to come soon!
 - SOTA-level on a variety of benchmarks with minimal fitting and a fraction of the inference time.
 
-<figure>
-  <img src="https://verdict.haizelabs.com/Verdict-Tradeoff.png" alt="">
-  <figcaption>Verdict judges beat out reasoning models like o1 and o3-mini on evaluation tasks for a fraction of the cost and latency.</figcaption>
-</figure>
+Verdict judges beat out reasoning models like o1 and o3-mini on evaluation tasks for a fraction of the cost and latency.
+<p align="center"><img src="https://verdict.haizelabs.com/Verdict-Tradeoff.png" alt="Performance vs. Cost/Latency Tradeoff Comparison"></p>
 
 ## Table of Contents
 1. [Building Judges that Actually Work](#building-judges-that-actually-work)
