@@ -20,7 +20,7 @@ Verdict is a declarative framework for specifying and executing compound LLM-as-
 ---
 <p align="center">
   <img src="https://verdict.haizelabs.com/demo-no-animation.gif" alt="Verdict Demo on 10 Samples from ExpertQA"/>
-  Demo of 3x hierarchical verification judge + max vote implemented in Verdict (detailed <a href="https://verdict.haizelabs.com/docs/#quickstart">walkthrough</a>; <a href="https://github.com/haizelabs/verdict/blob/main/notebooks/results/hierarchical.ipynb">full code</a> with prompts).
+  3 hierarchically verified judges + max vote implemented in Verdict (<a href="https://verdict.haizelabs.com/docs/#quickstart">Walkthrough</a> / <a href="https://github.com/haizelabs/verdict/blob/main/notebooks/results/hierarchical.ipynb">Code + Prompts</a>).
 </p>
 
 ```python
