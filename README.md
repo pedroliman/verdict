@@ -2,24 +2,12 @@
 
 [<img src="https://verdict.haizelabs.com/hero.png?" alt="Verdict Logo" width="77.8%"/>](https://verdict.haizelabs.com/docs)
 
-**[Whitepaper](https://verdict.haizelabs.com/whitepaper.pdf) | [Docs](https://verdict.haizelabs.com/docs) | [Results](https://verdict.haizelabs.com)**
+**[Whitepaper](https://verdict.haizelabs.com/whitepaper.pdf) | [Docs](https://verdict.haizelabs.com/docs) | [Results](https://verdict.haizelabs.com) | `pip install verdict`**
 
 [![PyPI version](https://img.shields.io/pypi/v/verdict)](https://pypi.org/project/verdict/)
 [![Downloads](https://img.shields.io/pypi/dm/verdict)](https://pypistats.org/packages/verdict)
 [![Discord](https://img.shields.io/discord/1333947884462149682)](https://discord.gg/CzfKnCMvwx)
 </div>
-
-```bash
-# use your preferred environment manager
-conda create -n verdict python=3.12 # 3.9+
-conda activate verdict
-
-pip install verdict # or uv
-```
-
-<p align="center"><img src="https://verdict.haizelabs.com/demo-no-animation.gif" alt="Verdict Demo on 10 Samples from ExpertQA"/></p>
-
-----
 
 Verdict is a declarative framework for specifying and executing compound LLM-as-a-judge systems. It is
 - Plug-and-play across models, prompts, extraction methods, judge protocols — allowing for rapid iteration.
@@ -28,6 +16,30 @@ Verdict is a declarative framework for specifying and executing compound LLM-as-
 - Rate-limited on the client-side, so you never lose experiment results halfway through.
 - Integrated with [DSPy](https://github.com/stanfordnlp/dspy) for use as a metric in AI system optimization; and more to come soon!
 - SOTA-level on a variety of benchmarks with minimal fitting and a fraction of the inference time.
+
+---
+<p align="center">
+  <img src="https://verdict.haizelabs.com/demo-no-animation.gif" alt="Verdict Demo on 10 Samples from ExpertQA"/>
+  Demo of 3x hierarchical verification judge + max vote implemented in Verdict (detailed <a href="https://verdict.haizelabs.com/docs/#quickstart">walkthrough</a>; <a href="https://github.com/haizelabs/verdict/blob/main/notebooks/results/hierarchical.ipynb">full code</a> with prompts).
+</p>
+
+```python
+pipeline = Pipeline() \
+    >> Layer(
+        #   1. A CategoricalJudgeUnit first decides if a hallucination is present...
+        CategoricalJudgeUnit(name='Judge', categories=DiscreteScale(['yes', 'no']), explanation=True)
+            .prompt(JUDGE_PROMPT).via('gpt-4o', retries=3, temperature=0.7) \
+
+        #   2. Followed by a CategoricalJudgeUnit that verifies the initial judge's explanation and decision.
+        >> CategoricalJudgeUnit(name='Verify', categories=DiscreteScale(['yes', 'no']))
+            .prompt(VERIFY_PROMPT).via('gpt-4o', retries=3, temperature=0.0)
+    , repeat=3) # duplicate this 3x
+
+        #   3. Vote to find the most popular response.
+    >> MaxPoolUnit()
+```
+
+----
 
 Verdict judges beat out reasoning models like o1 and o3-mini on evaluation tasks for a fraction of the cost and latency.
 <p align="center"><img src="https://verdict.haizelabs.com/Verdict-Tradeoff.png" alt="Performance vs. Cost/Latency Tradeoff Comparison"></p>
