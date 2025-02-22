@@ -1,10 +1,42 @@
 from __future__ import annotations
 
 import logging
+import os
 import signal
+import sys
+import threading
 from functools import wraps
 from typing import Any, Callable, Optional, Type
 
+
+def is_signal_safe():
+    """
+    Strictly check if the current environment is safe for signal handling.
+
+    Returns:
+        bool: True only if ALL signal safety conditions are met
+    """
+    # Must be in the main thread
+    if threading.current_thread() is not threading.main_thread():
+        return False
+
+    # Must be in the main interpreter
+    if not hasattr(sys, 'argv'):
+        return False
+
+    # Check if we're in a forked process
+    if os.getpid() != os.getppid():
+        return False
+
+    # Additional interpreter state checks
+    if not sys.modules.get('__main__'):
+        return False
+
+    # Check if the interpreter is shutting down
+    if sys is None or threading is None:
+        return False
+
+    return True
 
 def keyboard_interrupt_safe(func: Callable[[Any], Any]) -> Callable[[Any], Any]:
     @wraps(func)
@@ -18,7 +50,11 @@ def keyboard_interrupt_safe(func: Callable[[Any], Any]) -> Callable[[Any], Any]:
             self.executor.graceful_shutdown()
         finally:
             signal.signal(signal.SIGINT, original_handler)
-    return wrapped
+
+    if is_signal_safe():
+        return wrapped
+    else:
+        return func
 
 class DisableLogger:
     def __init__(self, logger_name: str, all: bool=False) -> None:
@@ -40,3 +76,4 @@ class DisableLogger:
 def lightweight(cls: Type) -> Type:
     cls.lightweight = True
     return cls
+
