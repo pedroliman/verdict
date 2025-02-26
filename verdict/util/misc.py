@@ -24,10 +24,6 @@ def is_signal_safe():
     if not hasattr(sys, 'argv'):
         return False
 
-    # Check if we're in a forked process
-    if os.getpid() != os.getppid():
-        return False
-
     # Additional interpreter state checks
     if not sys.modules.get('__main__'):
         return False
