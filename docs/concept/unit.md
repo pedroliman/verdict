@@ -88,11 +88,11 @@ class PairwiseJudgeUnit(Unit):
         winner: str
 
     # Validate the ResponseSchema. This is called after the LLM inference call.
-    def validate(self, response: ResponseSchema, input: InputSchema) -> None:
+    def validate(self, input: InputSchema, response: ResponseSchema) -> None:
         pass
 
     # Post-process the ResponseSchema into the OutputSchema.
-    def process(self, response: ResponseSchema, input: InputSchema) -> OutputSchema:
+    def process(self, input: InputSchema, response: ResponseSchema) -> OutputSchema:
         return self.OutputSchema(winner=input.A if response.winner == 'A' else input.B)
 ```
 
