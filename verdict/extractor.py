@@ -4,6 +4,7 @@ import re
 from abc import ABC, abstractmethod
 from collections import defaultdict
 from dataclasses import dataclass
+from pydantic import BaseModel
 from typing import Any, Dict, Iterator, List, Optional, Tuple, Type, Union
 
 from loguru._logger import Logger
@@ -306,6 +307,12 @@ class TokenProbabilityExtractor(Extractor):
         if hasattr(choice := response.choices[0], 'logprobs'):
             logprobs = choice.logprobs
             logger.debug(f"TokenProbabilityExtractor {self.__class__.__name__} received logprobs: {logprobs}")
+            if isinstance(logprobs, dict): 
+                logprobs = logprobs['content'][0]['top_logprobs']
+            elif isinstance(logprobs, BaseModel):
+                logprobs = logprobs.model_dump()
+            else:
+                raise ConfigurationError(f"Unsupported logprobs format: {logprobs}")
             if logprobs['content'] is not None:
                 probabilities = {
                     lp['token']: math.exp(lp['logprob']) for lp in logprobs['content'][0]['top_logprobs'] if lp['token'] in self.scale.token_support()
