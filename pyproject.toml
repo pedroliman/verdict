@@ -45,7 +45,8 @@ dependencies = [
     "eval-type-backport",
     "typing_extensions",
     "loguru",
-    "krippendorff"
+    "krippendorff",
+    "psutil",
 ]
 
 [project.optional-dependencies]
